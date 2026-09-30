@@ -18,5 +18,8 @@ export const config = {
   /** Comma separated list of allowed CORS origins. Empty = allow all. */
   corsOrigins: (process.env.CORS_ORIGINS ?? "").split(",").map((s) => s.trim()).filter(Boolean),
   /** `/v1/raw` passthrough. On by default, off when NODE_ENV=production unless ENABLE_RAW=true. */
+  /** Optional: persist resolved player photos (table pro_player_photos). */
+  supabaseUrl: (process.env.SUPABASE_URL ?? "").replace(/\/$/, ""),
+  supabaseServiceKey: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
   enableRaw: process.env.ENABLE_RAW ? process.env.ENABLE_RAW === "true" : process.env.NODE_ENV !== "production",
 } as const;

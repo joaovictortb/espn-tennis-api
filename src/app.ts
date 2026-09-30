@@ -6,6 +6,7 @@ import swaggerUi from "@fastify/swagger-ui";
 import { config } from "./config.js";
 import { AppError } from "./lib/errors.js";
 import { v1Routes } from "./routes/v1.js";
+import { applyPhotos, loadPhotos, photoStats } from "./services/photos.js";
 import { cache } from "./services/tennis.js";
 
 export async function buildApp(opts: FastifyServerOptions = {}) {
@@ -28,6 +29,17 @@ export async function buildApp(opts: FastifyServerOptions = {}) {
     },
   });
   await app.register(swaggerUi, { routePrefix: "/docs" });
+
+  // Fotos: troca headshotUrl pela foto resolvida (ESPN → TheSportsDB → Wikipedia)
+  // em qualquer resposta /v1; quem ainda não foi resolvido entra na fila.
+  void loadPhotos();
+  app.addHook("preSerialization", async (req, _reply, payload) => {
+    if (req.url.startsWith("/v1/") && payload && typeof payload === "object" && "data" in payload) {
+      await loadPhotos();
+      applyPhotos((payload as { data: unknown }).data);
+    }
+    return payload;
+  });
 
   app.setErrorHandler((err, req, reply) => {
     if (err instanceof AppError) {
@@ -58,6 +70,7 @@ export async function buildApp(opts: FastifyServerOptions = {}) {
     uptimeSec: Math.round(process.uptime()),
     cacheEntries: cache.size,
     heapMb: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
+    photos: photoStats(),
     at: new Date().toISOString(),
   }));
 
