@@ -226,6 +226,18 @@ export async function v1Routes(app: FastifyInstance) {
     async (req, reply) => send(reply, await svc.news(req.query), 300, { tour: req.query.tour }),
   );
 
+  app.get<{ Params: { id: string } }>(
+    "/news/:id",
+    {
+      schema: {
+        tags: ["news"],
+        summary: "One article with the full text (paragraphs) and all images",
+        params: idParam("^\\d+$"),
+      },
+    },
+    async (req, reply) => send(reply, await svc.newsStory(req.params.id), 3600),
+  );
+
   // ------------------------------------------------ players
   app.get<{ Querystring: { q: string; limit: number } }>(
     "/players/search",

@@ -157,6 +157,12 @@ export interface NewsArticle {
   players: { id: string; name: string }[];
 }
 
+/** One article with its full body, as plain-text paragraphs (no ESPN HTML). */
+export interface NewsStory extends NewsArticle {
+  paragraphs: string[];
+  images: { url: string; alt: string | null; width: number | null; height: number | null; credit: string | null }[];
+}
+
 export interface PlayerSearchResult {
   id: string;
   name: string;

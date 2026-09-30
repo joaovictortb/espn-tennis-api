@@ -3,6 +3,7 @@ import type {
   Match,
   MatchState,
   NewsArticle,
+  NewsStory,
   PlayerProfile,
   PlayerSearchResult,
   PlayerSeason,
@@ -15,7 +16,7 @@ import * as espn from "../espn/client.js";
 import { TtlCache } from "../lib/cache.js";
 import { addDays, dayInTimezone, todayIn, toEspnDate } from "../lib/dates.js";
 import { UpstreamError, notFound } from "../lib/errors.js";
-import { normalizeNews } from "../normalize/news.js";
+import { normalizeNews, normalizeStory } from "../normalize/news.js";
 import { buildPlayerSeason, normalizeProfile, normalizeSearch, tourFromAthlete } from "../normalize/players.js";
 import { normalizeRankings } from "../normalize/rankings.js";
 import { compareMatches, mergeTournaments, normalizeScoreboard } from "../normalize/matches.js";
@@ -155,6 +156,16 @@ export function news(p: { tour: TourParam; limit: number; playerId?: string }): 
       : await espn.fetchSiteNews(p.tour, p.limit);
     return normalizeNews(raw).slice(0, p.limit);
   });
+}
+
+/** One article with the full text. Articles don't change much: 1 h cache. */
+export async function newsStory(id: string): Promise<Result<NewsStory>> {
+  const r = await cache.get(`story:${id}`, 1 * HOUR, async () => {
+    const story = normalizeStory(await espn.fetchNewsStory(id).catch(mapUpstream404(`News ${id} not found`)));
+    if (!story) throw notFound(`News ${id} not found`);
+    return story;
+  });
+  return r;
 }
 
 export function searchPlayers(q: string, limit: number): Promise<Result<PlayerSearchResult[]>> {

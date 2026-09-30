@@ -16,6 +16,8 @@ export const ESPN = {
   CORE: "https://sports.core.api.espn.com/v2/sports/tennis",
   WEB: "https://site.web.api.espn.com/apis",
   NOW: "https://now.core.api.espn.com/v1/sports/news",
+  /** Full article body (HTML in `headlines[0].story`). */
+  CONTENT: "https://content.core.api.espn.com/v1/sports/news",
 } as const;
 
 export const ALLOWED_RAW_HOSTS = new Set([
@@ -46,6 +48,9 @@ export const fetchRankings = (tour: Tour) => fetchJson<any>(buildUrl(ESPN.SITE, 
 /** Site news ignores `athlete=` filters; use `fetchNowNews` for that. */
 export const fetchSiteNews = (tour: TourParam, limit: number) =>
   fetchJson<any>(buildUrl(ESPN.SITE, `${tour}/news`, { limit }));
+
+export const fetchNewsStory = (id: string) =>
+  fetchJson<any>(buildUrl(ESPN.CONTENT, encodeURIComponent(id)));
 
 export const fetchNowNews = (p: { tour?: Tour; athleteId?: string; limit: number }) =>
   fetchJson<any>(buildUrl(ESPN.NOW, "", { sport: "tennis", leagues: p.tour, athletes: p.athleteId, limit: p.limit }));
