@@ -1,0 +1,1247 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-09-30T13:20:22.417Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "wrk_001espntennis",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "ESPN Tennis API v2",
+      "description": "Normalised ESPN tennis proxy. Responses: { data, meta }. Errors: { error: { code, message } }. Swagger: {{ _.base_url }}/docs",
+      "scope": "collection",
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "env_002espntennis",
+      "_type": "environment",
+      "parentId": "wrk_001espntennis",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3333",
+        "player_id": "3782",
+        "player_id_wta": "1556",
+        "tournament_id": "959-2026",
+        "match_id": "186244",
+        "date": "2026-09-30",
+        "tz": "America/Sao_Paulo"
+      },
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "fld_003espntennis",
+      "_type": "request_group",
+      "parentId": "wrk_001espntennis",
+      "name": "00 System",
+      "description": "",
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_004espntennis",
+      "_type": "request",
+      "parentId": "fld_003espntennis",
+      "name": "Health",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/health",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999996,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_005espntennis",
+      "_type": "request",
+      "parentId": "fld_003espntennis",
+      "name": "Root",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999995,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_006espntennis",
+      "_type": "request",
+      "parentId": "fld_003espntennis",
+      "name": "OpenAPI JSON",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/docs/json",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999994,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "fld_007espntennis",
+      "_type": "request_group",
+      "parentId": "wrk_001espntennis",
+      "name": "01 Matches",
+      "description": "Jogos. status = scheduled,live,finished,canceled,postponed,suspended | category = mens-singles, womens-singles, mens-doubles, womens-doubles, mixed-doubles | country = BRA, ARG, GER...",
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_008espntennis",
+      "_type": "request",
+      "parentId": "fld_007espntennis",
+      "name": "Live now",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/matches/live",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "all",
+          "disabled": false
+        },
+        {
+          "name": "category",
+          "value": "mens-singles",
+          "disabled": true
+        },
+        {
+          "name": "country",
+          "value": "BRA",
+          "disabled": true
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_009espntennis",
+      "_type": "request",
+      "parentId": "fld_007espntennis",
+      "name": "Live - Brasileiros",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/matches/live",
+      "body": {},
+      "parameters": [
+        {
+          "name": "country",
+          "value": "BRA",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999991,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_010espntennis",
+      "_type": "request",
+      "parentId": "fld_007espntennis",
+      "name": "Today (tz Sao Paulo)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/matches",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "all",
+          "disabled": false
+        },
+        {
+          "name": "tz",
+          "value": "{{ _.tz }}",
+          "disabled": false
+        },
+        {
+          "name": "status",
+          "value": "live,scheduled",
+          "disabled": true
+        },
+        {
+          "name": "category",
+          "value": "mens-singles",
+          "disabled": true
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999990,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_011espntennis",
+      "_type": "request",
+      "parentId": "fld_007espntennis",
+      "name": "Day - specific date",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/matches",
+      "body": {},
+      "parameters": [
+        {
+          "name": "date",
+          "value": "{{ _.date }}",
+          "disabled": false
+        },
+        {
+          "name": "tz",
+          "value": "{{ _.tz }}",
+          "disabled": false
+        },
+        {
+          "name": "tour",
+          "value": "atp",
+          "disabled": false
+        },
+        {
+          "name": "status",
+          "value": "finished",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999989,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_012espntennis",
+      "_type": "request",
+      "parentId": "fld_007espntennis",
+      "name": "Day - Brasileiros",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/matches",
+      "body": {},
+      "parameters": [
+        {
+          "name": "country",
+          "value": "BRA",
+          "disabled": false
+        },
+        {
+          "name": "date",
+          "value": "{{ _.date }}",
+          "disabled": true
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999988,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_013espntennis",
+      "_type": "request",
+      "parentId": "fld_007espntennis",
+      "name": "Day - one player",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/matches",
+      "body": {},
+      "parameters": [
+        {
+          "name": "playerId",
+          "value": "{{ _.player_id }}",
+          "disabled": false
+        },
+        {
+          "name": "date",
+          "value": "{{ _.date }}",
+          "disabled": true
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999987,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_014espntennis",
+      "_type": "request",
+      "parentId": "fld_007espntennis",
+      "name": "Day - one tournament",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/matches",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tournamentId",
+          "value": "{{ _.tournament_id }}",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999986,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_015espntennis",
+      "_type": "request",
+      "parentId": "fld_007espntennis",
+      "name": "Match by id",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/matches/{{ _.match_id }}",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "all",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999985,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "fld_016espntennis",
+      "_type": "request_group",
+      "parentId": "wrk_001espntennis",
+      "name": "02 Tournaments",
+      "description": "id do torneio = <tournamentId>-<ano>, ex 959-2026 (China Open), 154-2026 (Australian Open)",
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_017espntennis",
+      "_type": "request",
+      "parentId": "fld_016espntennis",
+      "name": "Current (running now)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/tournaments/current",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "all",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999983,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_018espntennis",
+      "_type": "request",
+      "parentId": "fld_016espntennis",
+      "name": "Season calendar",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/tournaments",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "all",
+          "disabled": false
+        },
+        {
+          "name": "year",
+          "value": "2026",
+          "disabled": false
+        },
+        {
+          "name": "state",
+          "value": "upcoming",
+          "disabled": true
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999982,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_019espntennis",
+      "_type": "request",
+      "parentId": "fld_016espntennis",
+      "name": "Grand Slams",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/tournaments",
+      "body": {},
+      "parameters": [
+        {
+          "name": "grandSlam",
+          "value": "true",
+          "disabled": false
+        },
+        {
+          "name": "year",
+          "value": "2026",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999981,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_020espntennis",
+      "_type": "request",
+      "parentId": "fld_016espntennis",
+      "name": "Upcoming ATP",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/tournaments",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "atp",
+          "disabled": false
+        },
+        {
+          "name": "state",
+          "value": "upcoming",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999980,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_021espntennis",
+      "_type": "request",
+      "parentId": "fld_016espntennis",
+      "name": "Season 2025 WTA",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/tournaments",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "wta",
+          "disabled": false
+        },
+        {
+          "name": "year",
+          "value": "2025",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999979,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_022espntennis",
+      "_type": "request",
+      "parentId": "fld_016espntennis",
+      "name": "Tournament detail (full draw)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/tournaments/{{ _.tournament_id }}",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "all",
+          "disabled": false
+        },
+        {
+          "name": "category",
+          "value": "mens-singles",
+          "disabled": true
+        },
+        {
+          "name": "round",
+          "value": "Round 1",
+          "disabled": true
+        },
+        {
+          "name": "status",
+          "value": "live",
+          "disabled": true
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999978,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_023espntennis",
+      "_type": "request",
+      "parentId": "fld_016espntennis",
+      "name": "Australian Open 2026 - Finals",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/tournaments/154-2026",
+      "body": {},
+      "parameters": [
+        {
+          "name": "round",
+          "value": "Final",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999977,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "fld_024espntennis",
+      "_type": "request_group",
+      "parentId": "wrk_001espntennis",
+      "name": "03 Rankings",
+      "description": "Top 150 simples (ESPN).",
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_025espntennis",
+      "_type": "request",
+      "parentId": "fld_024espntennis",
+      "name": "ATP top 20",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/rankings",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "atp",
+          "disabled": false
+        },
+        {
+          "name": "limit",
+          "value": "20",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999975,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_026espntennis",
+      "_type": "request",
+      "parentId": "fld_024espntennis",
+      "name": "WTA top 20",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/rankings",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "wta",
+          "disabled": false
+        },
+        {
+          "name": "limit",
+          "value": "20",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999974,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_027espntennis",
+      "_type": "request",
+      "parentId": "fld_024espntennis",
+      "name": "ATP Brasileiros",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/rankings",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "atp",
+          "disabled": false
+        },
+        {
+          "name": "country",
+          "value": "BRA",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999973,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_028espntennis",
+      "_type": "request",
+      "parentId": "fld_024espntennis",
+      "name": "WTA Brasileiras",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/rankings",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "wta",
+          "disabled": false
+        },
+        {
+          "name": "country",
+          "value": "BRA",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999972,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "fld_029espntennis",
+      "_type": "request_group",
+      "parentId": "wrk_001espntennis",
+      "name": "04 News",
+      "description": "",
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_030espntennis",
+      "_type": "request",
+      "parentId": "fld_029espntennis",
+      "name": "Latest tennis news",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/news",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "all",
+          "disabled": false
+        },
+        {
+          "name": "limit",
+          "value": "10",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999970,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_031espntennis",
+      "_type": "request",
+      "parentId": "fld_029espntennis",
+      "name": "ATP news",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/news",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "atp",
+          "disabled": false
+        },
+        {
+          "name": "limit",
+          "value": "10",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999969,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_032espntennis",
+      "_type": "request",
+      "parentId": "fld_029espntennis",
+      "name": "WTA news",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/news",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "wta",
+          "disabled": false
+        },
+        {
+          "name": "limit",
+          "value": "10",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999968,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_033espntennis",
+      "_type": "request",
+      "parentId": "fld_029espntennis",
+      "name": "News about a player",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/news",
+      "body": {},
+      "parameters": [
+        {
+          "name": "playerId",
+          "value": "{{ _.player_id }}",
+          "disabled": false
+        },
+        {
+          "name": "limit",
+          "value": "10",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999967,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "fld_034espntennis",
+      "_type": "request_group",
+      "parentId": "wrk_001espntennis",
+      "name": "05 Players",
+      "description": "IDs: 3623 Sinner, 3782 Alcaraz, 11745 Joao Fonseca, 1556 Madison Keys. tour e opcional (auto-detectado).",
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_035espntennis",
+      "_type": "request",
+      "parentId": "fld_034espntennis",
+      "name": "Search",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/players/search",
+      "body": {},
+      "parameters": [
+        {
+          "name": "q",
+          "value": "fonseca",
+          "disabled": false
+        },
+        {
+          "name": "limit",
+          "value": "10",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999965,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_036espntennis",
+      "_type": "request",
+      "parentId": "fld_034espntennis",
+      "name": "Profile",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/players/{{ _.player_id }}",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tour",
+          "value": "atp",
+          "disabled": true
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999964,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_037espntennis",
+      "_type": "request",
+      "parentId": "fld_034espntennis",
+      "name": "Profile WTA",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/players/{{ _.player_id_wta }}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999963,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_038espntennis",
+      "_type": "request",
+      "parentId": "fld_034espntennis",
+      "name": "Season matches + record",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/players/{{ _.player_id }}/matches",
+      "body": {},
+      "parameters": [
+        {
+          "name": "year",
+          "value": "2026",
+          "disabled": false
+        },
+        {
+          "name": "limit",
+          "value": "20",
+          "disabled": false
+        },
+        {
+          "name": "status",
+          "value": "finished",
+          "disabled": true
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999962,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_039espntennis",
+      "_type": "request",
+      "parentId": "fld_034espntennis",
+      "name": "Joao Fonseca season",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/players/11745/matches",
+      "body": {},
+      "parameters": [
+        {
+          "name": "limit",
+          "value": "20",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999961,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_040espntennis",
+      "_type": "request",
+      "parentId": "fld_034espntennis",
+      "name": "Previous season (2025)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/players/{{ _.player_id_wta }}/matches",
+      "body": {},
+      "parameters": [
+        {
+          "name": "year",
+          "value": "2025",
+          "disabled": false
+        },
+        {
+          "name": "limit",
+          "value": "10",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999960,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "fld_041espntennis",
+      "_type": "request_group",
+      "parentId": "wrk_001espntennis",
+      "name": "06 Debug (raw ESPN)",
+      "description": "So em dev. Hosts permitidos: site.api.espn.com, sports.core.api.espn.com, site.web.api.espn.com, now.core.api.espn.com",
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_042espntennis",
+      "_type": "request",
+      "parentId": "fld_041espntennis",
+      "name": "Raw ESPN scoreboard",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/raw",
+      "body": {},
+      "parameters": [
+        {
+          "name": "url",
+          "value": "https://site.api.espn.com/apis/site/v2/sports/tennis/atp/scoreboard",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999958,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_043espntennis",
+      "_type": "request",
+      "parentId": "fld_041espntennis",
+      "name": "Raw ESPN athlete",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/raw",
+      "body": {},
+      "parameters": [
+        {
+          "name": "url",
+          "value": "https://sports.core.api.espn.com/v2/sports/tennis/athletes/3782",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999957,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "fld_044espntennis",
+      "_type": "request_group",
+      "parentId": "wrk_001espntennis",
+      "name": "07 Errors (expected)",
+      "description": "Exemplos de erros esperados",
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_045espntennis",
+      "_type": "request",
+      "parentId": "fld_044espntennis",
+      "name": "400 - bad date",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/matches",
+      "body": {},
+      "parameters": [
+        {
+          "name": "date",
+          "value": "30-09-2026",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999955,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_046espntennis",
+      "_type": "request",
+      "parentId": "fld_044espntennis",
+      "name": "400 - bad status",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/matches",
+      "body": {},
+      "parameters": [
+        {
+          "name": "status",
+          "value": "playing",
+          "disabled": false
+        }
+      ],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999954,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_047espntennis",
+      "_type": "request",
+      "parentId": "fld_044espntennis",
+      "name": "404 - unknown player",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/players/99999999",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999953,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    },
+    {
+      "_id": "req_048espntennis",
+      "_type": "request",
+      "parentId": "fld_044espntennis",
+      "name": "404 - unknown route",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/nope",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999952,
+      "created": 1790774422416,
+      "modified": 1790774422416
+    }
+  ]
+}
