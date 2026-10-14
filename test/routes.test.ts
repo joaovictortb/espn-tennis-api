@@ -160,3 +160,34 @@ describe("routes", () => {
     expect(r.json().error.code).toBe("NOT_FOUND");
   });
 });
+
+describe("SEC-14: CORS e limite de chamadas", () => {
+  const withOrigin = (url: string, origin: string) =>
+    app.inject({ method: "GET", url, headers: { origin } });
+
+  it("site de fora não recebe permissão de CORS", async () => {
+    const r = await withOrigin("/v1/rankings?tour=atp/v1/rankings/atplimit=3", "https://site-malicioso.example");
+    expect(r.headers["access-control-allow-origin"]).toBeUndefined();
+  });
+
+  it("site da 0-40, preview da Vercel e localhost recebem CORS", async () => {
+    for (const origin of [
+      "https://lovefortyoficial.com",
+      "https://zeroquarenta-git-main-younner.vercel.app",
+      "http://localhost:8081",
+    ]) {
+      const r = await withOrigin("/v1/rankings?tour=atp/v1/rankings/atplimit=3", origin);
+      expect(r.headers["access-control-allow-origin"]).toBe(origin);
+    }
+  });
+
+  it("respostas /v1 trazem o limite por minuto", async () => {
+    const r = await get("/v1/rankings?tour=atp/v1/rankings/atplimit=3");
+    expect(r.headers["x-ratelimit-limit"]).toBe("300");
+  });
+
+  it("/health fica fora do limite", async () => {
+    const r = await get("/health");
+    expect(r.headers["x-ratelimit-limit"]).toBeUndefined();
+  });
+});

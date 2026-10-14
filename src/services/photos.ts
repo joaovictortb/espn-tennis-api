@@ -6,8 +6,9 @@
  *   2. TheSportsDB (free key "3", ~30 req/min) — transparent cut-out
  *   3. Wikipedia page image (free-licensed only)
  * Results (including "no photo") are kept in memory and, when SUPABASE_URL +
- * SUPABASE_SERVICE_ROLE_KEY are set, persisted in `pro_player_photos` so they
- * survive restarts (Render free tier sleeps and wipes memory).
+ * SUPABASE_ANON_KEY are set, read/persisted through the RPCs
+ * pro_player_photos_list / pro_player_photo_upsert (the write needs
+ * PHOTOS_WRITER_KEY) so they survive restarts. No service role (SEC-14).
  *
  * `applyPhotos` walks any response payload and rewrites `headshotUrl` for every
  * object that has `id` + `headshotUrl`. Unknown ids keep the ESPN guess and are
@@ -32,8 +33,8 @@ let loaded: Promise<void> | null = null;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const supabase = () =>
-  config.supabaseUrl && config.supabaseServiceKey
-    ? { url: `${config.supabaseUrl}/rest/v1/pro_player_photos`, key: config.supabaseServiceKey }
+  config.supabaseUrl && config.supabaseAnonKey
+    ? { rpc: `${config.supabaseUrl}/rest/v1/rpc`, key: config.supabaseAnonKey }
     : null;
 
 /** Loads the persisted photos once (called at boot and lazily). */
@@ -42,8 +43,10 @@ export function loadPhotos(): Promise<void> {
     const db = supabase();
     if (!db) return;
     try {
-      const res = await fetch(`${db.url}?select=espn_id,url,source,checked_at`, {
-        headers: { apikey: db.key, Authorization: `Bearer ${db.key}` },
+      const res = await fetch(`${db.rpc}/pro_player_photos_list`, {
+        method: "POST",
+        headers: { apikey: db.key, Authorization: `Bearer ${db.key}`, "Content-Type": "application/json" },
+        body: "{}",
       });
       if (!res.ok) return;
       const rows = (await res.json()) as Array<{ espn_id: string; url: string | null; source: Source; checked_at: string }>;
@@ -60,22 +63,18 @@ export function loadPhotos(): Promise<void> {
 async function persist(id: string, name: string, row: PhotoRow) {
   store.set(id, row);
   const db = supabase();
-  if (!db) return;
+  if (!db || !config.photosWriterKey) return;
   try {
-    await fetch(db.url, {
+    await fetch(`${db.rpc}/pro_player_photo_upsert`, {
       method: "POST",
-      headers: {
-        apikey: db.key,
-        Authorization: `Bearer ${db.key}`,
-        "Content-Type": "application/json",
-        Prefer: "resolution=merge-duplicates,return=minimal",
-      },
+      headers: { apikey: db.key, Authorization: `Bearer ${db.key}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        espn_id: id,
-        name,
-        url: row.url,
-        source: row.source,
-        checked_at: new Date(row.checkedAt).toISOString(),
+        p_secret: config.photosWriterKey,
+        p_espn_id: id,
+        p_name: name,
+        p_url: row.url,
+        p_source: row.source,
+        p_checked_at: new Date(row.checkedAt).toISOString(),
       }),
     });
   } catch {

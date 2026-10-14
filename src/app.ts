@@ -1,6 +1,7 @@
 import Fastify, { type FastifyServerOptions } from "fastify";
 import compress from "@fastify/compress";
 import cors from "@fastify/cors";
+import rateLimit from "@fastify/rate-limit";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import { config } from "./config.js";
@@ -9,14 +10,33 @@ import { v1Routes } from "./routes/v1.js";
 import { applyPhotos, loadPhotos, photoStats } from "./services/photos.js";
 import { cache } from "./services/tennis.js";
 
+/** Site de produção, previews da Vercel e desenvolvimento local. */
+const DEFAULT_CORS_ORIGINS: (string | RegExp)[] = [
+  "https://lovefortyoficial.com",
+  "https://www.lovefortyoficial.com",
+  /^https:\/\/[a-z0-9-]+\.vercel\.app$/,
+  /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/,
+];
+
 export async function buildApp(opts: FastifyServerOptions = {}) {
   const app = Fastify({
     logger: { level: config.logLevel },
+    // Railway fica na frente: o IP real vem no X-Forwarded-For (limite por IP).
+    trustProxy: true,
     ajv: { customOptions: { coerceTypes: true, useDefaults: true, removeAdditional: true } },
     ...opts,
   });
 
-  await app.register(cors, { origin: config.corsOrigins.length ? config.corsOrigins : true, methods: ["GET"] });
+  // SEC-14: CORS só para o app web da 0-40 (antes: qualquer site).
+  await app.register(cors, {
+    origin: config.corsOrigins.length ? config.corsOrigins : DEFAULT_CORS_ORIGINS,
+    methods: ["GET"],
+  });
+  await app.register(rateLimit, {
+    max: config.rateLimitPerMinute,
+    timeWindow: "1 minute",
+    allowList: (req) => req.url === "/health" || req.url.startsWith("/docs"),
+  });
   await app.register(compress, { global: true, threshold: 1024 });
   await app.register(swagger, {
     openapi: {

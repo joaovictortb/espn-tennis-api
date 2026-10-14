@@ -30,7 +30,7 @@ npm run dev     # http://localhost:3333   (Swagger em http://localhost:3333/docs
 - **Produção:** a API precisa ser hospedada (Render, Railway, Fly.io, VPS…) com `NODE_ENV=production`. Não dá para usar `localhost` no app publicado.
 - No 0-40, ler de uma env pública do Expo: `EXPO_PUBLIC_PRO_TENNIS_API_URL`.
 
-Variáveis da API (ver `.env.example`): `PORT`, `DEFAULT_TZ` (padrão `America/Sao_Paulo`), `CORS_ORIGINS`, `ESPN_TIMEOUT_MS`, `ESPN_RETRIES`, `CACHE_MAX_ENTRIES`, `ENABLE_RAW`.
+Variáveis da API (ver `.env.example`): `PORT`, `DEFAULT_TZ` (padrão `America/Sao_Paulo`), `CORS_ORIGINS` (vazio = só o app web da 0-40), `RATE_LIMIT_PER_MINUTE` (padrão 300 por IP), `ESPN_TIMEOUT_MS`, `ESPN_RETRIES`, `CACHE_MAX_ENTRIES`, `ENABLE_RAW`, `SUPABASE_URL` + `SUPABASE_ANON_KEY` + `PHOTOS_WRITER_KEY` (fotos; sem service role).
 
 ---
 

@@ -15,11 +15,22 @@ export const config = {
   cacheMaxEntries: num(process.env.CACHE_MAX_ENTRIES, 500),
   /** Default timezone used to decide which calendar day a match belongs to. */
   defaultTimezone: process.env.DEFAULT_TZ ?? "America/Sao_Paulo",
-  /** Comma separated list of allowed CORS origins. Empty = allow all. */
+  /**
+   * Comma separated list of allowed CORS origins. Empty = only the 0-40 web
+   * app (production domain, Vercel previews, localhost). Native apps and
+   * server-to-server calls don't send Origin, so they are not affected.
+   */
   corsOrigins: (process.env.CORS_ORIGINS ?? "").split(",").map((s) => s.trim()).filter(Boolean),
+  /** Requests per minute per client IP (SEC-14). */
+  rateLimitPerMinute: num(process.env.RATE_LIMIT_PER_MINUTE, 300),
   /** `/v1/raw` passthrough. On by default, off when NODE_ENV=production unless ENABLE_RAW=true. */
-  /** Optional: persist resolved player photos (table pro_player_photos). */
+  /**
+   * Optional: persist resolved player photos via RPCs pro_player_photos_list /
+   * pro_player_photo_upsert. Public anon key + a write-only secret — never the
+   * service role (SEC-14).
+   */
   supabaseUrl: (process.env.SUPABASE_URL ?? "").replace(/\/$/, ""),
-  supabaseServiceKey: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
+  supabaseAnonKey: process.env.SUPABASE_ANON_KEY ?? "",
+  photosWriterKey: process.env.PHOTOS_WRITER_KEY ?? "",
   enableRaw: process.env.ENABLE_RAW ? process.env.ENABLE_RAW === "true" : process.env.NODE_ENV !== "production",
 } as const;
